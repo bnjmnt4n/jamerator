@@ -1,0 +1,41 @@
+.App {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;  
+  text-align: center;
+}
+
+header,
+main,
+footer {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+main {
+  flex: 1;
+}
+
+ul {
+  list-style: none;
+  margin: 10px auto;
+  padding: 0;
+}
+
+button,
+.button {
+  display: inline-block;
+  border: 1px solid gray;
+  margin: 5px;
+  padding: 10px;
+  font-size: 1em;
+  background: wheat;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+}
+
+button:hover,
+.button:hover {
+  box-shadow: 1px;
+}
