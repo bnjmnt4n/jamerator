@@ -25,19 +25,24 @@ export default function RecentlyPlayedRoute() {
     <main>
       <h2>Recently Played</h2>
       {
-        !recentlyPlayed.length
-          ? <p>Loading...</p>
-          : <ol reversed>
+        recentlyPlayed.length
+          ? (
+            <ol reversed>
               {recentlyPlayed.map(({ name, spotify_url }, i) => (
                 <li key={i + spotify_url}>
                   <a href={spotify_url}>{name}</a>
                 </li>
               ))}
             </ol>
+          )
+          : (
+            <p>Loading...</p>
+          )
       }
       <button onClick={refresh}>Refresh</button>
       <p>
-        Note that Spotify only allows the 50 most recent songs played to be shown.
+        Note: Spotify only allows access to the 50 most recently played songs,
+        so the list of items displayed might be shorter than expected.
       </p>
       {errorDescription && (
         <p>
