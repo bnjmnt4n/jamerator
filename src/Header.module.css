@@ -1,3 +1,13 @@
+.link, .link:hover, .link:focus {
+  text-decoration: none;
+  color: black;
+}
+
 .heading {
   font-size: 2em;
+}
+
+.logo {
+  vertical-align: middle;
+  padding-right: 0.4em;
 }

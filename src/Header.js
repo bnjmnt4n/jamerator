@@ -5,12 +5,16 @@ import * as CONFIG from './config.js';
 
 import styles from './Header.module.css';
 
+import logo from './logo.svg';
+
 export default function Header({ compact }) {
   return (
     <header>
-      <Link to="/">
-        {/* <img src={logo} className="App-logo" alt="logo" width="200" height="200" /> */}
-        <h1 className={styles.heading}>{CONFIG.APP_NAME}</h1>
+      <Link to="/" className={styles.link}>
+        <h1 className={styles.heading}>
+          <img src={logo} className={styles.logo} alt="Shuffle logo" width="30" height="30" />
+          {CONFIG.APP_NAME}
+        </h1>
       </Link>
 
       {!compact && <span>{CONFIG.APP_DESCRIPTION}</span>}
