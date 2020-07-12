@@ -22,31 +22,15 @@ export default function App() {
           <Header compact="false" />
 
           <Switch>
-            <Route
-              path="/"
-              exact
-              component={IndexRoute}
-            />
+            <Route path="/" exact component={IndexRoute} />
+            <Route path="/about/" component={AboutRoute} />
             <Route
               path="/callback/"
               render={({ location }) => <CallbackRoute location={location} />}
             />
-            <Route
-              path="/about/"
-              component={AboutRoute}
-            />
-            <PrivateRoute
-              path="/recent/"
-              component={RecentlyPlayedRoute}
-            />
-            <PrivateRoute
-              path="/album/"
-              component={AlbumRoute}
-            />
-            <PrivateRoute
-              path="/playlist/"
-              component={PlaylistRoute}
-            />
+            <PrivateRoute path="/recent/" component={RecentlyPlayedRoute} />
+            <PrivateRoute path="/album/" component={AlbumRoute} />
+            <PrivateRoute path="/playlist/" component={PlaylistRoute} />
 
             {/* Redirect to home page on 404. */}
             <Route

@@ -8,7 +8,7 @@ import { getLoginURL } from '../api.js';
 export default function IndexRoute() {
   const { authenticationState } = useContext(AuthenticationContext);
 
-  if (authenticationState == 'authenticated') {
+  if (authenticationState === 'authenticated') {
     return (
       <main>
         <nav>
