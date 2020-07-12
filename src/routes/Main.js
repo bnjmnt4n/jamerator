@@ -6,9 +6,9 @@ import AuthenticationContext from '../AuthenticationContext.js';
 import { getLoginURL } from '../api.js';
 
 export default function IndexRoute() {
-  const { token } = useContext(AuthenticationContext);
+  const { authenticationState } = useContext(AuthenticationContext);
 
-  if (token) {
+  if (authenticationState == 'authenticated') {
     return (
       <main>
         <nav>
