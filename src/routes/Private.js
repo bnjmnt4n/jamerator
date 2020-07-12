@@ -5,8 +5,6 @@ import { getLoginURL } from '../api.js';
 
 export default function PrivateRoute({ render, authenticationState, ...rest }) {
   const internalRender = (props) => {
-    console.log(props.location)
-
     switch (authenticationState) {
       case 'authenticated':
         return render(props);
@@ -27,7 +25,12 @@ export default function PrivateRoute({ render, authenticationState, ...rest }) {
               You need to sign in to access this page:
             </p>
             <p>
-              <a className="button" href={getLoginURL(props.location.pathname.slice(1))}>Sign in with Spotify</a>
+              <a
+                className="button"
+                href={getLoginURL(props.location.pathname.slice(1))}
+              >
+                Sign in with Spotify
+              </a>
             </p>
           </main>
         );
