@@ -10,21 +10,22 @@ function AuthenticationProvider({ children }) {
   const [authenticationState, setAuthenticationState] = useState('');
 
   // For each change in token, ...
-  useEffect(async () => {
-    // ...store token locally and...
-      DataStore.set('token', token);
-
-    // validate token and.
+  useEffect(() => {
+    // validate token and...
     if (token) {
       setAuthenticationState('authenticating');
-      const isValid = await validateToken(token);
-      if (!isValid) {
-        setToken('');
-        setAuthenticationState('');
-      } else {
-        setAuthenticationState('authenticated');
-      }
+      validateToken(token).then((isValid) => {
+        if (!isValid) {
+          setToken('');
+          setAuthenticationState('');
+        } else {
+          setAuthenticationState('authenticated');
+        }
+      });
     }
+
+    // ...store token locally.
+    DataStore.set('token', token);
   }, [token]);
 
   return (
