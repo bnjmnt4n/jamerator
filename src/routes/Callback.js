@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import queryString from 'query-string';
 
+import AuthenticationContext from '../AuthenticationContext.js';
 import { getLoginURL } from '../api.js';
 
-export default function CallbackRoute({ location, setToken }) {
+export default function CallbackRoute({ location }) {
+  const { setToken } = useContext(AuthenticationContext);
+
   const { search, hash } = location;
   const { redirect } = queryString.parse(search);
   const { error, access_token } = queryString.parse(hash);

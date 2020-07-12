@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+
+import AuthenticationContext from '../AuthenticationContext.js';
 
 import { getLoginURL } from '../api.js';
 
-export default function IndexRoute({ token }) {
+export default function IndexRoute() {
+  const { token } = useContext(AuthenticationContext);
+
   if (token) {
     return (
       <main>

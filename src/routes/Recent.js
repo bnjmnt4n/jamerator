@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
+import AuthenticationContext from '../AuthenticationContext.js';
 import { getRecentlyPlayed } from '../api.js';
 
-export default function RecentlyPlayedRoute({ token }) {
+export default function RecentlyPlayedRoute() {
+  const { token } = useContext(AuthenticationContext);
+
   let [recentlyPlayed, setRecentlyPlayed] = useState([]);
   let [errorDescription, setErrorDescription] = useState('');
 

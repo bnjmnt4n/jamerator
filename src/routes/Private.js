@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Route } from 'react-router-dom';
 
+import AuthenticationContext from '../AuthenticationContext.js';
 import { getLoginURL } from '../api.js';
 
-export default function PrivateRoute({ render, authenticationState, ...rest }) {
+export default function PrivateRoute({ render, ...rest }) {
+  const { authenticationState } = useContext(AuthenticationContext);
+
   const internalRender = (props) => {
     switch (authenticationState) {
       case 'authenticated':

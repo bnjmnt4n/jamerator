@@ -1,12 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 
+import AuthenticationContext from '../AuthenticationContext.js';
 import { generateShuffledArray } from '../utilities.js';
 import { getItem, getTotal } from '../api.js';
 
 import Album from '../Album.js';
 
 function generateRoute({ type }) {
-  return function ({ token }) {
+  return function () {
+    const { token } = useContext(AuthenticationContext);
+
     // We store the total number of albums/playlists, and an array of indices
     // which are shuffled.
     let [{ total, array }, setObject] = useState({ total: 0, array: [] });
