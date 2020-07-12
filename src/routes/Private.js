@@ -4,13 +4,22 @@ import { Route } from 'react-router-dom';
 import AuthenticationContext from '../AuthenticationContext.js';
 import { getLoginURL } from '../api.js';
 
-export default function PrivateRoute({ render, ...rest }) {
+export default function PrivateRoute({
+  component: Component,
+  render: renderRoute,
+  ...rest
+}) {
   const { authenticationState } = useContext(AuthenticationContext);
 
+  // Internal render function, handling authentication requests.
   const internalRender = (props) => {
     switch (authenticationState) {
       case 'authenticated':
-        return render(props);
+        if (Component) {
+          // Currently, route components do not require any props.
+          return <Component />;
+        }
+        return renderRoute(props);
       case 'authenticating':
         return (
           <main>
