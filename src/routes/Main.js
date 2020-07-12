@@ -44,9 +44,9 @@ export default function IndexRoute() {
       <nav>
         <ul>
           <li>
-            <a href={getLoginURL()}>Sign In with Spotify</a><br />
+            <a href={getLoginURL()} className="button">Sign In with Spotify</a><br />
           </li>
-          <li>
+          <li style={{ marginTop: '10px' }}>
             <Link to="/about">About</Link>
           </li>
         </ul>

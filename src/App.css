@@ -12,6 +12,7 @@ footer {
   margin: 0 auto;
 }
 
+/* Force `main` to expand so footer remains at the bottom. */
 main {
   flex: 1;
 }
@@ -25,17 +26,36 @@ ul {
 button,
 .button {
   display: inline-block;
-  border: 1px solid gray;
-  margin: 5px;
+  margin: 3px 5px;
   padding: 10px;
+
+  color: black;
+  background: white;
+  border-radius: 4px;
+  border: 1px solid #6c757d;
   font-size: 1em;
-  background: wheat;
-  border-radius: 5px;
   outline: none;
   cursor: pointer;
+  text-decoration: none;
+
+  transition: all 0.15s;
 }
 
 button:hover,
-.button:hover {
-  box-shadow: 1px;
+button:focus,
+.button:hover,
+.button:focus {
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.6);
+  color: white;
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+a, a:hover, a:visited {
+  color: black;
+}
+
+a:hover {
+  color: #6c757d;
+  text-decoration: none;
 }

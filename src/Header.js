@@ -8,9 +8,9 @@ import styles from './Header.module.css';
 export default function Header({ compact }) {
   return (
     <header>
-      <Link to="/" className={styles.heading}>
+      <Link to="/">
         {/* <img src={logo} className="App-logo" alt="logo" width="200" height="200" /> */}
-        <h1>{CONFIG.APP_NAME}</h1>
+        <h1 className={styles.heading}>{CONFIG.APP_NAME}</h1>
       </Link>
 
       {!compact && <span>{CONFIG.APP_DESCRIPTION}</span>}
