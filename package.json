@@ -15,7 +15,6 @@
   "bugs": "https://github.com/bnjmnt4n/jamerator/issues",
   "dependencies": {
     "lodash": "^4.17.21",
-    "node-fetch": "^2.6.0",
     "query-string": "^6.12.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
