@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 
 import AuthenticationContext from '../AuthenticationContext.js';
 import { getLoginURL } from '../api.js';
 
-export default function CallbackRoute({ location }) {
+export default function CallbackRoute() {
   const { setToken } = useContext(AuthenticationContext);
 
+  const location = useLocation();
   const { search, hash } = location;
   const { redirect } = queryString.parse(search);
   const { error, access_token } = queryString.parse(hash);
@@ -34,8 +35,6 @@ export default function CallbackRoute({ location }) {
   setToken(access_token);
 
   return (
-    <Redirect
-      to={{ pathname: `/${redirect || ''}` }}
-    />
+    <Navigate to={`/${redirect || ''}`} replace />
   );
 }

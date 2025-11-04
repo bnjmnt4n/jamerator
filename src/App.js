@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import './App.css';
 
@@ -16,29 +16,27 @@ import Footer from './Footer.js';
 export default function App() {
   return (
     <AuthenticationProvider>
-      <Router>
+      <BrowserRouter>
         <div className="App">
           <Header compact="false" />
 
-          <Switch>
-            <Route path="/" exact component={IndexRoute} />
-            <Route path="/about/" component={AboutRoute} />
-            <Route
-              path="/callback/"
-              render={({ location }) => <CallbackRoute location={location} />}
-            />
-            <PrivateRoute path="/album/" component={AlbumRoute} />
-            <PrivateRoute path="/playlist/" component={PlaylistRoute} />
+          <Routes>
+            <Route path="/" element={<IndexRoute />} />
+            <Route path="about" element={<AboutRoute />} />
+            <Route path="callback" element={<CallbackRoute />} />
+            <Route path="album" element={<PrivateRoute element={<AlbumRoute />} />} />
+            <Route path="playlist" element={<PrivateRoute element={<PlaylistRoute />} />} />
 
             {/* Redirect to home page on 404. */}
             <Route
-              render={() => <Redirect to={{ pathname: "/" }} />}
+              path="*"
+              element={<Navigate to="/" />}
             />
-          </Switch>
+          </Routes>
 
           <Footer />
         </div>
-      </Router>
+      </BrowserRouter>
     </AuthenticationProvider>
   );
 }
