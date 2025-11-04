@@ -1,12 +1,11 @@
 import React, { createContext, useEffect, useState } from 'react';
 
-import { DataStore } from './utilities';
 import { validateToken } from './api.js';
 
 const AuthenticationContext = createContext();
 
 function AuthenticationProvider({ children }) {
-  const [token, setToken] = useState(DataStore.get('token', ''));
+  const [token, setToken] = useState(() => localStorage.getItem('token') ?? '');
   const [authenticationState, setAuthenticationState] = useState('');
 
   // For each change in token, ...
@@ -25,7 +24,7 @@ function AuthenticationProvider({ children }) {
     }
 
     // ...store token locally.
-    DataStore.set('token', token);
+    localStorage.setItem('token', token);
   }, [token]);
 
   return (
