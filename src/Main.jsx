@@ -1,11 +1,11 @@
 import { useCallback, useContext, useEffect, useState } from "react";
 import { useQueries } from "@tanstack/react-query";
 
-import AuthenticationContext from "./AuthenticationContext.js";
+import AuthenticationContext from "./AuthenticationContext.jsx";
 import { generateShuffledArray } from "./utilities.js";
 import { getItem, getTotal, fetchWithToken, fetchDevice } from "./api.js";
 
-import Album from "./Album.js";
+import Album from "./Album.jsx";
 
 const ITEMS_TO_DISPLAY = 4;
 

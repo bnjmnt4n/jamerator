@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { Link } from "react-router";
 
-import AuthenticationContext from "../AuthenticationContext.js";
+import AuthenticationContext from "../AuthenticationContext.jsx";
 
 import { getLoginURL } from "../api.js";
-import { Main } from "../Main.js";
+import { Main } from "../Main.jsx";
 
 export default function IndexRoute() {
   const { authenticationState } = useContext(AuthenticationContext);

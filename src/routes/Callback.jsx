@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Navigate, useLocation } from "react-router";
 import queryString from "query-string";
 
-import AuthenticationContext from "../AuthenticationContext.js";
+import AuthenticationContext from "../AuthenticationContext.jsx";
 import { getLoginURL } from "../api.js";
 
 export default function CallbackRoute() {

@@ -6,7 +6,7 @@ export const APP_DESCRIPTION = pkg.description;
 
 export const DEFAULT_IMAGE_DIMENSION = 100;
 
-export const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT;
+export const CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID;
 
 export const SCOPES = [
   "user-read-playback-state",

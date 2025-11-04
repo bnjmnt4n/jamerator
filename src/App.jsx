@@ -4,12 +4,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "./App.css";
 
-import { AuthenticationProvider } from "./AuthenticationContext.js";
-import IndexRoute from "./routes/Main.js";
-import AboutRoute from "./routes/About.js";
-import CallbackRoute from "./routes/Callback.js";
+import { AuthenticationProvider } from "./AuthenticationContext.jsx";
+import IndexRoute from "./routes/Main.jsx";
+import AboutRoute from "./routes/About.jsx";
+import CallbackRoute from "./routes/Callback.jsx";
 
-import Header from "./Header.js";
+import Header from "./Header.jsx";
 
 const queryClient = new QueryClient();
 
