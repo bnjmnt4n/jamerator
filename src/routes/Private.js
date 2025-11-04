@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 
 import AuthenticationContext from '../AuthenticationContext.js';
 import { getLoginURL } from '../api.js';
