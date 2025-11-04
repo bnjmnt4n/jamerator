@@ -1,21 +1,25 @@
-import queryString from 'query-string';
+import queryString from "query-string";
 
-import * as CONFIG from './config.js';
+import * as CONFIG from "./config.js";
 
 const login_url_query = {
   client_id: CONFIG.CLIENT_ID,
-  response_type: 'token',
+  response_type: "token",
   scope: CONFIG.SCOPES,
   redirect_uri: (redirect) => {
-    const query_string = redirect ? `?${queryString.stringify({ redirect })}` : '';
+    const query_string = redirect
+      ? `?${queryString.stringify({ redirect })}`
+      : "";
     return `${window.location.protocol}//${window.location.host}/callback${query_string}`;
   },
 };
 
 const API_URLS = {
-  'album': ({ offset }) => `https://api.spotify.com/v1/me/albums?offset=${offset}&limit=1`,
-  'playlist': ({ offset }) => `https://api.spotify.com/v1/me/playlists?offset=${offset}&limit=1`,
-  'login_url': (redirect) => {
+  album: ({ offset }) =>
+    `https://api.spotify.com/v1/me/albums?offset=${offset}&limit=1`,
+  playlist: ({ offset }) =>
+    `https://api.spotify.com/v1/me/playlists?offset=${offset}&limit=1`,
+  login_url: (redirect) => {
     const redirect_uri = login_url_query.redirect_uri(redirect);
     const query = {
       ...login_url_query,
@@ -23,7 +27,7 @@ const API_URLS = {
     };
 
     return `https://accounts.spotify.com/authorize?${queryString.stringify(query)}`;
-  }
+  },
 };
 
 export const getLoginURL = API_URLS.login_url;
@@ -32,15 +36,15 @@ export const getLoginURL = API_URLS.login_url;
 async function fetchWithToken(url, token) {
   const response = await fetch(url, {
     headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    }
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
   });
   const json = await response.json();
 
   if (json.error) {
     let err;
-    if (typeof json.error === 'object') {
+    if (typeof json.error === "object") {
       err = new Error(`${json.error.status} ${json.error.message}`);
     } else {
       err = new Error(json.error_description);
@@ -58,9 +62,9 @@ export async function validateToken(token) {
   try {
     // We use `getItem` instead of `getItemInternal` to ensure that all required
     // data fields are accessible.
-    await getItem({ token, type: 'album', index: 0 });
+    await getItem({ token, type: "album", index: 0 });
     return true;
-  } catch(e) {
+  } catch (e) {
     console.error(e);
     return false;
   }
@@ -78,7 +82,7 @@ export async function getItem(options) {
   const json = await getItemInternal(options);
   let item = json.items[0];
 
-  item = options.type === 'album' ? item.album : item;
+  item = options.type === "album" ? item.album : item;
 
   return extractItemDetails(item);
 }
@@ -92,7 +96,10 @@ function getItemInternal({ index, token, type }) {
 
 // Get selected details of a specific album or playlist.
 function extractItemDetails(item) {
-  const { name, external_urls: { spotify: spotify_url} } = item;
+  const {
+    name,
+    external_urls: { spotify: spotify_url },
+  } = item;
   const artist_details = extractArtistDetails(item);
   const image_details = extractImageDetails(item);
   const track_details = extractTrackDetails(item);
@@ -102,13 +109,13 @@ function extractItemDetails(item) {
     spotify_url,
     ...artist_details,
     ...image_details,
-    ...track_details
+    ...track_details,
   };
 }
 
 // Get the artist of a specific album.
 function extractArtistDetails({ type, artists }) {
-  if (type === 'album') {
+  if (type === "album") {
     return { artist: artists[0].name };
   }
 
@@ -121,14 +128,13 @@ function extractImageDetails({ images }) {
     // Images are sorted from largest to smallest.
     images
       .slice()
-      .filter(image => image.width >= CONFIG.DEFAULT_IMAGE_DIMENSION)
-      .reverse()[0] ||
-    images[0];
+      .filter((image) => image.width >= CONFIG.DEFAULT_IMAGE_DIMENSION)
+      .reverse()[0] || images[0];
 
   return {
     image_url,
     image_width,
-    image_height
+    image_height,
   };
 }
 
@@ -137,15 +143,18 @@ function extractTrackDetails({ total_tracks, tracks }) {
   // Playlists have a different API.
   if (!total_tracks) {
     return {
-      total_tracks: tracks.total
+      total_tracks: tracks.total,
     };
   }
 
-  const total_ms = tracks.items.reduce((acc, item) => acc + item.duration_ms, 0);
+  const total_ms = tracks.items.reduce(
+    (acc, item) => acc + item.duration_ms,
+    0,
+  );
   const total_time = Math.round(total_ms / (60 * 1000));
 
   return {
     total_tracks,
-    total_time
+    total_time,
   };
 }

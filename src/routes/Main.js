@@ -1,32 +1,26 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router';
+import React, { useContext } from "react";
+import { Link } from "react-router";
 
-import AuthenticationContext from '../AuthenticationContext.js';
+import AuthenticationContext from "../AuthenticationContext.js";
 
-import { getLoginURL } from '../api.js';
+import { getLoginURL } from "../api.js";
 
 export default function IndexRoute() {
   const { authenticationState } = useContext(AuthenticationContext);
 
-  if (authenticationState === 'authenticated') {
+  if (authenticationState === "authenticated") {
     return (
       <main>
         <nav>
           <ul>
             <li>
-              <Link to="/album">
-                Get a random album
-              </Link>
+              <Link to="/album">Get a random album</Link>
             </li>
             <li>
-              <Link to="/playlist">
-                Get a random playlist
-              </Link>
+              <Link to="/playlist">Get a random playlist</Link>
             </li>
             <li>
-              <Link to="/about">
-                About
-              </Link>
+              <Link to="/about">About</Link>
             </li>
           </ul>
         </nav>
@@ -39,9 +33,12 @@ export default function IndexRoute() {
       <nav>
         <ul>
           <li>
-            <a href={getLoginURL()} className="button">Sign In with Spotify</a><br />
+            <a href={getLoginURL()} className="button">
+              Sign In with Spotify
+            </a>
+            <br />
           </li>
-          <li style={{ marginTop: '10px' }}>
+          <li style={{ marginTop: "10px" }}>
             <Link to="/about">About</Link>
           </li>
         </ul>

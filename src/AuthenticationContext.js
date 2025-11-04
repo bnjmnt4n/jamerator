@@ -1,30 +1,30 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useEffect, useState } from "react";
 
-import { validateToken } from './api.js';
+import { validateToken } from "./api.js";
 
 const AuthenticationContext = createContext();
 
 function AuthenticationProvider({ children }) {
-  const [token, setToken] = useState(() => localStorage.getItem('token') ?? '');
-  const [authenticationState, setAuthenticationState] = useState('');
+  const [token, setToken] = useState(() => localStorage.getItem("token") ?? "");
+  const [authenticationState, setAuthenticationState] = useState("");
 
   // For each change in token, ...
   useEffect(() => {
     // validate token and...
     if (token) {
-      setAuthenticationState('authenticating');
+      setAuthenticationState("authenticating");
       validateToken(token).then((isValid) => {
         if (!isValid) {
-          setToken('');
-          setAuthenticationState('');
+          setToken("");
+          setAuthenticationState("");
         } else {
-          setAuthenticationState('authenticated');
+          setAuthenticationState("authenticated");
         }
       });
     }
 
     // ...store token locally.
-    localStorage.setItem('token', token);
+    localStorage.setItem("token", token);
   }, [token]);
 
   return (
@@ -32,7 +32,7 @@ function AuthenticationProvider({ children }) {
       value={{
         authenticationState,
         token,
-        setToken
+        setToken,
       }}
     >
       {children}

@@ -1,7 +1,7 @@
 .App {
   display: flex;
   min-height: 100vh;
-  flex-direction: column;  
+  flex-direction: column;
   text-align: center;
 }
 
@@ -51,7 +51,9 @@ button:focus,
   border-color: #6c757d;
 }
 
-a, a:hover, a:visited {
+a,
+a:hover,
+a:visited {
   color: black;
 }
 

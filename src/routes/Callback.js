@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
-import { Navigate, useLocation } from 'react-router';
-import queryString from 'query-string';
+import React, { useContext } from "react";
+import { Navigate, useLocation } from "react-router";
+import queryString from "query-string";
 
-import AuthenticationContext from '../AuthenticationContext.js';
-import { getLoginURL } from '../api.js';
+import AuthenticationContext from "../AuthenticationContext.js";
+import { getLoginURL } from "../api.js";
 
 export default function CallbackRoute() {
   const { setToken } = useContext(AuthenticationContext);
@@ -17,16 +17,12 @@ export default function CallbackRoute() {
     return (
       <main>
         <h2>Error Signing Into Spotify</h2>
-        {error && (
-          <p>
-            {error}
-          </p>
-        )}
+        {error && <p>{error}</p>}
+        <p>Try signing in again:</p>
         <p>
-          Try signing in again:
-        </p>
-        <p>
-          <a className="button" href={getLoginURL()}>Sign in with Spotify</a>
+          <a className="button" href={getLoginURL()}>
+            Sign in with Spotify
+          </a>
         </p>
       </main>
     );
@@ -34,7 +30,5 @@ export default function CallbackRoute() {
 
   setToken(access_token);
 
-  return (
-    <Navigate to={`/${redirect || ''}`} replace />
-  );
+  return <Navigate to={`/${redirect || ""}`} replace />;
 }

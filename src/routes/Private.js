@@ -1,32 +1,28 @@
-import React, { useContext } from 'react';
-import { useLocation } from 'react-router';
+import React, { useContext } from "react";
+import { useLocation } from "react-router";
 
-import AuthenticationContext from '../AuthenticationContext.js';
-import { getLoginURL } from '../api.js';
+import AuthenticationContext from "../AuthenticationContext.js";
+import { getLoginURL } from "../api.js";
 
 export default function PrivateRoute({ element }) {
   const { authenticationState } = useContext(AuthenticationContext);
   const location = useLocation();
 
   switch (authenticationState) {
-    case 'authenticated':
+    case "authenticated":
       return element;
-    case 'authenticating':
+    case "authenticating":
       return (
         <main>
-          <p>
-            Please wait, loading...
-          </p>
+          <p>Please wait, loading...</p>
         </main>
       );
-    case '':
+    case "":
     default:
       return (
         <main>
           <h2>Sign Into Spotify</h2>
-          <p>
-            You need to sign in to access this page:
-          </p>
+          <p>You need to sign in to access this page:</p>
           <p>
             <a
               className="button"

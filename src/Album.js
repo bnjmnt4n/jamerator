@@ -1,24 +1,33 @@
-import React from 'react';
+import React from "react";
 
-import { DEFAULT_IMAGE_DIMENSION } from './config.js';
-import { pluralize, readableTime } from './utilities.js';
+import { DEFAULT_IMAGE_DIMENSION } from "./config.js";
+import { pluralize, readableTime } from "./utilities.js";
 
-import styles from './Album.module.css';
+import styles from "./Album.module.css";
 
-export default function Album({ name, artist, image_url, image_width, spotify_url, total_tracks, total_time }) {
+export default function Album({
+  name,
+  artist,
+  image_url,
+  image_width,
+  spotify_url,
+  total_tracks,
+  total_time,
+}) {
   let loading = !spotify_url;
   if (loading) {
-    name = 'Loading...';
+    name = "Loading...";
     image_width = DEFAULT_IMAGE_DIMENSION;
-    image_url = '';
+    image_url = "";
   }
 
   if (image_width > DEFAULT_IMAGE_DIMENSION) {
     image_width = DEFAULT_IMAGE_DIMENSION;
   }
 
-  const tracks = typeof total_tracks == 'number' ? pluralize(total_tracks, 'track') : '';
-  const time = typeof total_time == 'number' ? readableTime(total_time) : '';
+  const tracks =
+    typeof total_tracks == "number" ? pluralize(total_tracks, "track") : "";
+  const time = typeof total_time == "number" ? readableTime(total_time) : "";
 
   return (
     <article className="Album">
@@ -40,7 +49,9 @@ export default function Album({ name, artist, image_url, image_width, spotify_ur
 
       {!loading && (
         <p>
-          <a className="button" href={spotify_url}>Open with Spotify</a>
+          <a className="button" href={spotify_url}>
+            Open with Spotify
+          </a>
         </p>
       )}
     </article>

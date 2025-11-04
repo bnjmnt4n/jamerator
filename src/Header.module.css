@@ -1,4 +1,6 @@
-.link, .link:hover, .link:focus {
+.link,
+.link:hover,
+.link:focus {
   text-decoration: none;
   color: black;
 }

@@ -1,17 +1,17 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
+import React from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router";
 
-import './App.css';
+import "./App.css";
 
-import { AuthenticationProvider } from './AuthenticationContext.js';
-import PrivateRoute from './routes/Private.js';
-import IndexRoute from './routes/Main.js';
-import AboutRoute from './routes/About.js';
-import CallbackRoute from './routes/Callback.js';
-import { AlbumRoute, PlaylistRoute } from './routes/Generators.js';
+import { AuthenticationProvider } from "./AuthenticationContext.js";
+import PrivateRoute from "./routes/Private.js";
+import IndexRoute from "./routes/Main.js";
+import AboutRoute from "./routes/About.js";
+import CallbackRoute from "./routes/Callback.js";
+import { AlbumRoute, PlaylistRoute } from "./routes/Generators.js";
 
-import Header from './Header.js';
-import Footer from './Footer.js';
+import Header from "./Header.js";
+import Footer from "./Footer.js";
 
 export default function App() {
   return (
@@ -24,14 +24,17 @@ export default function App() {
             <Route path="/" element={<IndexRoute />} />
             <Route path="about" element={<AboutRoute />} />
             <Route path="callback" element={<CallbackRoute />} />
-            <Route path="album" element={<PrivateRoute element={<AlbumRoute />} />} />
-            <Route path="playlist" element={<PrivateRoute element={<PlaylistRoute />} />} />
+            <Route
+              path="album"
+              element={<PrivateRoute element={<AlbumRoute />} />}
+            />
+            <Route
+              path="playlist"
+              element={<PrivateRoute element={<PlaylistRoute />} />}
+            />
 
             {/* Redirect to home page on 404. */}
-            <Route
-              path="*"
-              element={<Navigate to="/" />}
-            />
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
 
           <Footer />
