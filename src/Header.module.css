@@ -7,9 +7,8 @@
 
 .heading {
   font-size: 2em;
-}
-
-.logo {
-  vertical-align: middle;
-  padding-right: 0.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  column-gap: 0.4em;
 }

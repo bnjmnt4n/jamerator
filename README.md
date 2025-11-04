@@ -11,9 +11,7 @@ jamerator is a testing ground to use React and related technologies in a fun sid
 1. Add the following redirect URLs. If you're going to deploy the app, do add URIs for your app’s domain as well.
 
    ```
-   http://localhost:3000/callback
-   http://localhost:3000/callback?redirect=album
-   http://localhost:3000/callback?redirect=playlist
+   http://127.0.0.1:3000/callback
    ```
 
 1. Install dependencies:

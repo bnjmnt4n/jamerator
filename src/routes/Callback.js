@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Navigate, useLocation } from "react-router";
 import queryString from "query-string";
 

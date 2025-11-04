@@ -1,39 +1,33 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Link } from "react-router";
 
 import AuthenticationContext from "../AuthenticationContext.js";
 
 import { getLoginURL } from "../api.js";
+import { Main } from "../Main.js";
 
 export default function IndexRoute() {
   const { authenticationState } = useContext(AuthenticationContext);
 
   if (authenticationState === "authenticated") {
+    return <Main />;
+  }
+
+  if (authenticationState === "authenticating") {
     return (
-      <main>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/album">Get a random album</Link>
-            </li>
-            <li>
-              <Link to="/playlist">Get a random playlist</Link>
-            </li>
-            <li>
-              <Link to="/about">About</Link>
-            </li>
-          </ul>
-        </nav>
+      <main style={{ textAlign: "center" }}>
+        <p>Loading...</p>
       </main>
     );
   }
 
   return (
-    <main>
+    <main style={{ textAlign: "center" }}>
+      <p>A random album/playlist selector for Spotify.</p>
       <nav>
         <ul>
           <li>
-            <a href={getLoginURL()} className="button">
+            <a href={getLoginURL()} className="button spotify">
               Sign In with Spotify
             </a>
             <br />

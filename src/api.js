@@ -33,13 +33,17 @@ const API_URLS = {
 export const getLoginURL = API_URLS.login_url;
 
 // Send a request to the specified URL with the bearer token and obtain the response as JSON.
-async function fetchWithToken(url, token) {
+export async function fetchWithToken(url, token, isPost) {
   const response = await fetch(url, {
+    ...(isPost ? { method: "POST" } : {}),
     headers: {
-      Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
   });
+  if (isPost) {
+    return await response.text();
+  }
   const json = await response.json();
 
   if (json.error) {
@@ -54,6 +58,18 @@ async function fetchWithToken(url, token) {
   }
 
   return json;
+}
+
+export async function putWithToken(url, body, token) {
+  const response = await fetch(url, {
+    body: JSON.stringify(body),
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return await response.text();
 }
 
 // Validate a token by sending a request to access a saved album.
@@ -84,7 +100,7 @@ export async function getItem(options) {
 
   item = options.type === "album" ? item.album : item;
 
-  return extractItemDetails(item);
+  return await extractItemDetails(item, options.token);
 }
 
 // Obtain the raw data for a specific saved album/playlist.
@@ -95,17 +111,19 @@ function getItemInternal({ index, token, type }) {
 }
 
 // Get selected details of a specific album or playlist.
-function extractItemDetails(item) {
+async function extractItemDetails(item, token) {
   const {
     name,
+    uri,
     external_urls: { spotify: spotify_url },
   } = item;
   const artist_details = extractArtistDetails(item);
   const image_details = extractImageDetails(item);
-  const track_details = extractTrackDetails(item);
+  const track_details = await extractTrackDetails(item, token);
 
   return {
     name,
+    uri,
     spotify_url,
     ...artist_details,
     ...image_details,
@@ -139,7 +157,7 @@ function extractImageDetails({ images }) {
 }
 
 // Get the number of tracks and runtime of an album or playlist.
-function extractTrackDetails({ total_tracks, tracks }) {
+async function extractTrackDetails({ total_tracks, tracks }, token) {
   // Playlists have a different API.
   if (!total_tracks) {
     return {
@@ -147,14 +165,37 @@ function extractTrackDetails({ total_tracks, tracks }) {
     };
   }
 
-  const total_ms = tracks.items.reduce(
-    (acc, item) => acc + item.duration_ms,
-    0,
-  );
-  const total_time = Math.round(total_ms / (60 * 1000));
+  let total_ms = 0;
+  const track_uris = [];
+
+  do {
+    for (const item of tracks.items) {
+      total_ms += item.duration_ms;
+      track_uris.push(item.uri);
+    }
+    if (tracks.next) tracks = await fetchWithToken(tracks.next, token);
+    else tracks = null;
+  } while (tracks);
+
+  const total_time = Math.round(total_ms);
 
   return {
     total_tracks,
     total_time,
+    track_uris,
   };
+}
+
+export async function fetchDevice({ token }) {
+  const response = await fetchWithToken(
+    `https://api.spotify.com/v1/me/player/devices`,
+    token,
+  );
+  const availableDevices = response.devices.filter(
+    (device) => !device.is_restricted,
+  );
+  const device =
+    availableDevices.find((device) => device.is_active) || availableDevices[0];
+
+  return device;
 }

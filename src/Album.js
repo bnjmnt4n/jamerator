@@ -1,59 +1,100 @@
-import React from "react";
+import { useState } from "react";
 
 import { DEFAULT_IMAGE_DIMENSION } from "./config.js";
-import { pluralize, readableTime } from "./utilities.js";
+import { readableTime } from "./utilities.js";
 
-import styles from "./Album.module.css";
+import { fetchWithToken, putWithToken, fetchDevice } from "./api.js";
 
 export default function Album({
+  type,
+  token,
   name,
   artist,
+  uri,
   image_url,
-  image_width,
   spotify_url,
   total_tracks,
   total_time,
+  track_uris,
 }) {
-  let loading = !spotify_url;
-  if (loading) {
-    name = "Loading...";
-    image_width = DEFAULT_IMAGE_DIMENSION;
-    image_url = "";
-  }
-
-  if (image_width > DEFAULT_IMAGE_DIMENSION) {
-    image_width = DEFAULT_IMAGE_DIMENSION;
-  }
-
-  const tracks =
-    typeof total_tracks == "number" ? pluralize(total_tracks, "track") : "";
+  const tracks = typeof total_tracks == "number" ? total_tracks : "";
   const time = typeof total_time == "number" ? readableTime(total_time) : "";
 
+  const [status, setStatus] = useState("initial");
+  const [playStatus, setPlayStatus] = useState("initial");
+
+  async function play() {
+    setPlayStatus("playing");
+    const device = await fetchDevice({ token });
+    const playUrl = new URL(`https://api.spotify.com/v1/me/player/play`);
+    if (device) {
+      playUrl.searchParams.append("device_id", device.id);
+    }
+    await putWithToken(playUrl, { context_uri: uri }, token);
+    setPlayStatus("done");
+  }
+  async function queue() {
+    setStatus("queueing");
+    const device = await fetchDevice({ token });
+    for (const track_uri of track_uris) {
+      const queueUrl = new URL(`https://api.spotify.com/v1/me/player/queue`);
+      queueUrl.searchParams.append("uri", track_uri);
+      if (device) {
+        queueUrl.searchParams.append("device_id", device.id);
+      }
+      await fetchWithToken(queueUrl, token, true);
+    }
+    setStatus("done");
+  }
+
   return (
-    <article className="Album">
-      <img
-        className={styles.AlbumImage}
-        src={image_url}
-        width={image_width}
-        alt={loading ? name : `“${name} by ${artist}” Album Cover`}
-      />
+    <tr>
+      <td className="image">
+        <a className="button" href={spotify_url}>
+          <img
+            src={image_url}
+            width={DEFAULT_IMAGE_DIMENSION}
+            height={DEFAULT_IMAGE_DIMENSION}
+            alt={
+              type === "album"
+                ? `Album cover for ${name} by ${artist}`
+                : `Cover for playlist ${name}`
+            }
+          />
+        </a>
+      </td>
 
-      <h1>{name}</h1>
-      <h2>{artist}</h2>
+      <td className="album">
+        <a className="button" href={spotify_url}>
+          <strong>{name}</strong>
+          <br />
+          {artist}
+        </a>
+      </td>
 
-      <p>
-        {tracks}
-        {tracks && time && <br />}
-        {time}
-      </p>
+      <td className="tracks">{tracks}</td>
 
-      {!loading && (
-        <p>
-          <a className="button" href={spotify_url}>
-            Open with Spotify
-          </a>
-        </p>
-      )}
-    </article>
+      {type === "album" && <td className="runtime">{time}</td>}
+
+      <td className="buttons">
+        <button onClick={play} disabled={playStatus === "playing"}>
+          {playStatus === "initial"
+            ? "Play"
+            : playStatus === "playing"
+              ? "Playing"
+              : "Play"}
+        </button>
+        <br />
+        {type === "album" && (
+          <button onClick={queue} disabled={status === "queueing"}>
+            {status === "initial"
+              ? "Queue"
+              : status === "queueing"
+                ? "Queueing"
+                : "Queued"}
+          </button>
+        )}
+      </td>
+    </tr>
   );
 }

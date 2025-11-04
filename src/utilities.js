@@ -1,27 +1,22 @@
-import range from "lodash/range";
 import shuffle from "lodash/shuffle";
 
-export function pluralize(number, item) {
-  return `${number} ${item}${number === 1 ? "" : "s"}`;
-}
-
-export function readableTime(total_time) {
-  const hours = Math.floor(total_time / 60);
-  const minutes = total_time % 60;
+export function readableTime(ms) {
+  const hours = Math.floor(ms / (1000 * 60 * 60));
+  const minutes = Math.round((ms % (1000 * 60 * 60)) / (1000 * 60));
   let time = [];
 
   if (hours) {
-    time.push(pluralize(hours, "hour"));
+    time.push(`${hours}h`);
   }
   if (!hours || (hours && minutes)) {
-    time.push(pluralize(minutes, "minute"));
+    time.push(`${minutes}m`);
   }
 
   return time.join(" ");
 }
 
 export function generateShuffledArray(length) {
-  const array = range(length);
+  const array = Array.from({ length }, (_, i) => i);
   const shuffled = shuffle(array);
 
   return shuffled;
