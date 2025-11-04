@@ -8,4 +8,4 @@ export const DEFAULT_IMAGE_DIMENSION = 300;
 
 export const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT;
 
-export const SCOPES = 'user-library-read user-read-recently-played playlist-read-private playlist-read-collaborative';
+export const SCOPES = 'user-library-read playlist-read-private playlist-read-collaborative';

@@ -14,11 +14,6 @@ export default function IndexRoute() {
         <nav>
           <ul>
             <li>
-              <Link to="/recent">
-                Get recently played items
-              </Link>
-            </li>
-            <li>
               <Link to="/album">
                 Get a random album
               </Link>

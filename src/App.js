@@ -9,7 +9,6 @@ import IndexRoute from './routes/Main.js';
 import AboutRoute from './routes/About.js';
 import CallbackRoute from './routes/Callback.js';
 import { AlbumRoute, PlaylistRoute } from './routes/Generators.js';
-import RecentlyPlayedRoute from './routes/Recent.js';
 
 import Header from './Header.js';
 import Footer from './Footer.js';
@@ -28,7 +27,6 @@ export default function App() {
               path="/callback/"
               render={({ location }) => <CallbackRoute location={location} />}
             />
-            <PrivateRoute path="/recent/" component={RecentlyPlayedRoute} />
             <PrivateRoute path="/album/" component={AlbumRoute} />
             <PrivateRoute path="/playlist/" component={PlaylistRoute} />
 

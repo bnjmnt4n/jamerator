@@ -15,7 +15,6 @@ const login_url_query = {
 const API_URLS = {
   'album': ({ offset }) => `https://api.spotify.com/v1/me/albums?offset=${offset}&limit=1`,
   'playlist': ({ offset }) => `https://api.spotify.com/v1/me/playlists?offset=${offset}&limit=1`,
-  'recently_played': ({ limit }) => `https://api.spotify.com/v1/me/player/recently-played?limit=${limit}`,
   'login_url': (redirect) => {
     const redirect_uri = login_url_query.redirect_uri(redirect);
     const query = {
@@ -82,50 +81,6 @@ export async function getItem(options) {
   item = options.type === 'album' ? item.album : item;
 
   return extractItemDetails(item);
-}
-
-export async function getRecentlyPlayed({ items, limit, token }) {
-  let api_url = API_URLS.recently_played({ limit });
-  let results = [];
-  const seenSet = new Set();
-
-  while (api_url && results.length < items) {
-    let json = await fetchWithToken(api_url, token);
-
-    let list = await Promise.all(json.items.map(async function(item) {
-      const type = item.context ? item.context.type : 'track';
-      const spotify_url = (item.context ? item.context : item.track).external_urls.spotify;
-      let name;
-  
-      if (seenSet.has(spotify_url)) {
-        return null;
-      }
-      seenSet.add(spotify_url);
-  
-      switch (type) {
-        case 'artist':
-          name = item.track.artists[0].name;
-          break;
-        case 'album':
-          name = `${item.track.album.name} by ${item.track.album.artists[0].name}`;
-          break;
-        case 'playlist':
-          const playlist = await fetchWithToken(item.context.href, token);
-          name = `${playlist.name} by ${playlist.owner.display_name}`;
-          break;
-        case 'track':
-        default:
-          name = `${item.track.name} by ${item.track.artists[0].name}`;
-      }
-  
-      return { type, name, spotify_url };
-    }));
-  
-    results = results.concat(list.filter(item => item));
-    api_url = json.next;
-  }
-
-  return results;
 }
 
 // Obtain the raw data for a specific saved album/playlist.

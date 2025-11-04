@@ -14,7 +14,6 @@ jamerator is a testing ground to use React and related technologies in a fun sid
     http://localhost:3000/callback
     http://localhost:3000/callback?redirect=album
     http://localhost:3000/callback?redirect=playlist
-    http://localhost:3000/callback?redirect=recent
     ```
 
 1. Install dependencies:
