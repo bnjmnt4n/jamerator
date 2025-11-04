@@ -1,34 +1,49 @@
-import { useContext } from "react";
-import { Navigate, useLocation } from "react-router";
-import queryString from "query-string";
+import { useContext, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router";
 
 import AuthenticationContext from "../AuthenticationContext.jsx";
-import { getLoginURL } from "../api.js";
+import { getToken } from "../auth.js";
 
 export default function CallbackRoute() {
   const { setToken } = useContext(AuthenticationContext);
 
+  const navigate = useNavigate();
   const location = useLocation();
-  const { search, hash } = location;
-  const { redirect } = queryString.parse(search);
-  const { error, access_token } = queryString.parse(hash);
+  const urlParams = new URLSearchParams(location.search);
+  const code = urlParams.get("code");
+  const error = urlParams.get("error");
 
-  if (error || !access_token) {
+  if (error || !code) {
     return (
-      <main>
-        <h2>Error Signing Into Spotify</h2>
-        {error && <p>{error}</p>}
-        <p>Try signing in again:</p>
+      <main style={{ textAlign: "center" }}>
+        <h2>Error Signing In</h2>
+        {error && <p>Error: {error}</p>}
+        <p>Please try again:</p>
         <p>
-          <a className="button" href={getLoginURL()}>
+          <button
+            className="spotify"
+            onClick={async () => {
+              window.location.href = await generateAuthorizationUrl();
+            }}
+          >
             Sign in with Spotify
-          </a>
+          </button>
         </p>
       </main>
     );
   }
 
-  setToken(access_token);
+  useEffect(() => {
+    (async () => {
+      const response = await getToken(code);
+      setToken(response.access_token);
+      navigate("/", { replace: true });
+    })();
+  }, []);
 
-  return <Navigate to={`/${redirect || ""}`} replace />;
+  return (
+    <main style={{ textAlign: "center" }}>
+      <p>Loading...</p>
+    </main>
+  );
 }

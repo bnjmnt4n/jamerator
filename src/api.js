@@ -1,36 +1,11 @@
-import queryString from "query-string";
-
 import * as CONFIG from "./config.js";
-
-const login_url_query = {
-  client_id: CONFIG.CLIENT_ID,
-  response_type: "token",
-  scope: CONFIG.SCOPES,
-  redirect_uri: (redirect) => {
-    const query_string = redirect
-      ? `?${queryString.stringify({ redirect })}`
-      : "";
-    return `${window.location.protocol}//${window.location.host}/callback${query_string}`;
-  },
-};
 
 const API_URLS = {
   album: ({ offset }) =>
     `https://api.spotify.com/v1/me/albums?offset=${offset}&limit=1`,
   playlist: ({ offset }) =>
     `https://api.spotify.com/v1/me/playlists?offset=${offset}&limit=1`,
-  login_url: (redirect) => {
-    const redirect_uri = login_url_query.redirect_uri(redirect);
-    const query = {
-      ...login_url_query,
-      redirect_uri,
-    };
-
-    return `https://accounts.spotify.com/authorize?${queryString.stringify(query)}`;
-  },
 };
-
-export const getLoginURL = API_URLS.login_url;
 
 // Send a request to the specified URL with the bearer token and obtain the response as JSON.
 export async function fetchWithToken(url, token, isPost) {

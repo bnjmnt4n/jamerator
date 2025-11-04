@@ -121,7 +121,7 @@ button:hover,
   text-decoration: none;
 }
 
-a.spotify {
+.spotify {
   background-color: rgb(30, 215, 96);
   padding: 12px;
   border-radius: 4px;
@@ -129,7 +129,7 @@ a.spotify {
   color: black;
 }
 
-a.spotify:hover {
+.spotify:hover {
   background-color: #3be477;
   color: black;
 }

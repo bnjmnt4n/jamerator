@@ -3,8 +3,8 @@ import { Link } from "react-router";
 
 import AuthenticationContext from "../AuthenticationContext.jsx";
 
-import { getLoginURL } from "../api.js";
 import { Main } from "../Main.jsx";
+import { generateAuthorizationUrl } from "../auth.js";
 
 export default function IndexRoute() {
   const { authenticationState } = useContext(AuthenticationContext);
@@ -27,9 +27,14 @@ export default function IndexRoute() {
       <nav>
         <ul>
           <li>
-            <a href={getLoginURL()} className="button spotify">
+            <button
+              className="spotify"
+              onClick={async () => {
+                window.location.href = await generateAuthorizationUrl();
+              }}
+            >
               Sign In with Spotify
-            </a>
+            </button>
             <br />
           </li>
           <li style={{ marginTop: "10px" }}>
